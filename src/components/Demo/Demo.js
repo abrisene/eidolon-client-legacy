@@ -13,8 +13,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions } from '../../stores';
 
-import { Navbar } from '../Bootstrap';
-
 import { leagueGothic } from '../../fonts';
 import './styles.css';
 
@@ -76,16 +74,14 @@ class App extends Component {
     const descendants = children ? React.cloneElement(children, { ...childProps }) : '';
     return (
       <div id="l-app" className="l-app">
-        <Navbar light>
-          <div className="col-md-1">
-            <img id="app-logo" src={logo} />
-          </div>
-          <div className="col-md-11">
-            <h1 id="app-test" className="mt-2">EIDOLON</h1>
-          </div>
-        </Navbar>
         <div className="container mt-2">
           <div className="row">
+            <div className="col-md-1">
+              <img id="app-logo" src={logo} />
+            </div>
+            <div className="col-md-11">
+              <h1 id="app-test">EIDOLON</h1>
+            </div>
           </div>
         </div>
         { descendants }

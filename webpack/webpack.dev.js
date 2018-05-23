@@ -13,6 +13,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 /*
@@ -24,6 +25,11 @@ const port = process.env.DEV_PORT || 8080;
 /*
  # Plugins
  */
+
+const htmlPlugin = new HtmlWebPackPlugin({
+  template: './src/index.html',
+  filename: './index.html'
+});
 
 const environmentModePlugin = new webpack.DefinePlugin({
   'process.env.NODE_ENV': JSON.stringify('development'),
@@ -44,6 +50,7 @@ const config = {
     historyApiFallback: true,
   },
   plugins: [
+    htmlPlugin,
     environmentModePlugin,
     // npmInstallPlugin,
   ],

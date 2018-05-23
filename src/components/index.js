@@ -8,6 +8,8 @@
  */
 
 import App from './App';
+import Bootstrap from './Bootstrap';
+// import Demo from './Demo';
 
 /*
  # Module Exports
@@ -15,4 +17,6 @@ import App from './App';
 
 module.exports = {
   ...App,
+  ...Bootstrap,
+  // ...Demo,
 };

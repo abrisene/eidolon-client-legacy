@@ -15,47 +15,69 @@ import { createAction, handleActions } from 'redux-actions';
 
 // Actions
 
-const updateAppUser = createAction('APP/USER/UPDATE');
-const updateAppConfig = createAction('APP/CONFIG/UPDATE');
-const updateAppStore = createAction('APP/STORES/UPDATE');
+const updateConfig = createAction('APP/CONFIG/UPDATE');
+const updateEnv = createAction('APP/ENV/UPDATE');
+const updateStatus = createAction('APP/STATUS/UPDATE');
+const updateStore = createAction('APP/STORES/UPDATE');
 
 export const actions = {
-  updateAppUser,
-  updateAppConfig,
-  updateAppStore,
+  updateConfig,
+  updateEnv,
+  updateStatus,
+  updateStore,
 };
 
 // Selectors
 
-const getAppUser = state => state.user;
-const getAppConfig = state => state.config;
-const getAppStores = state => state.stores;
+const getConfig = state => state.config;
+const getEnv = state => state.env;
+const getStatus = state => state.status;
+const getStores = state => state.stores;
 
 export const selectors = {
-  getAppUser,
-  getAppConfig,
-  getAppStores,
+  getConfig,
+  getEnv,
+  getStatus,
+  getStores,
 };
 
 // Reducers
 
 const initialState = {
   config: {},
+  keys: {},
+  urls: {},
+  env: {},
+  status: {},
   stores: {},
 };
 
 export const reducers = handleActions({
-  'APP/USER/UPDATE': (state, action) => {
-    const { payload } = action;
-    return { ...state, user: payload };
-  },
   'APP/CONFIG/UPDATE': (state, action) => {
-    const { payload } = action;
-    return { ...state, config: payload };
+    const { data } = action;
+    return { ...state, config: data };
+  },
+  'APP/KEYS/UPDATE': (state, action) => {
+    const { data } = action;
+    return { ...state, keys: { ...state.keys, ...data } };
+  },
+  'APP/URLS/UPDATE': (state, action) => {
+    const { data } = action;
+    return { ...state, urls: { ...state.urls, ...data } };
+  },
+  'APP/ENV/UPDATE': (state, action) => {
+    const { data } = action;
+    return { ...state, env: data };
+  },
+  'APP/STATUS/UPDATE': (state, action) => {
+    const { data } = action;
+    const { key, value } = data;
+    const status = { ...state.status, [key]: value };
+    return { ...state, status };
   },
   'APP/STORES/UPDATE': (state, action) => {
-    const { payload } = action;
-    const { key, value } = payload;
+    const { data } = action;
+    const { key, value } = data;
 
     const stores = { ...state.stores, [key]: value };
     return { ...state, stores };

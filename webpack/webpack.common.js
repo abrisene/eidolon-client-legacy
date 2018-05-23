@@ -33,8 +33,10 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 const environmentPlugin = new webpack.DefinePlugin({
   'process.env.APP_NAME': JSON.stringify(process.env.APP_NAME),
+  'process.env.SOCKET_URI': JSON.stringify(process.env.SOCKET_URI || process.env.API_URI),
+  'process.env.API_URI': JSON.stringify(process.env.API_URI),
   'process.env.API_URLS': JSON.stringify(process.env.API_URLS),
-  'process.env.API_KEYS': JSON.stringify(process.env.APP_KEYS),
+  'process.env.API_KEYS': JSON.stringify(process.env.API_KEYS),
 });
 
 /*
@@ -44,31 +46,58 @@ const environmentPlugin = new webpack.DefinePlugin({
 const config = {
   module: {
     rules: [
+      // -- JS --
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
         }
       },
+      // -- IMAGES -- 
+      {
+        test: /\.(png|svg|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: './images/[path][name].[hash].[ext]',
+            }
+          }
+        ]
+      },
+      // -- FONTS -- 
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: './fonts/[path][name].[hash].[ext]',
+            }
+          }
+        ]
+      },
+      // -- CSS -- 
       {
         test: /\.css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               modules: true,
               importLoaders: 1,
-              localIdentName: '[name]_[local]_[hash:base64]',
+              localIdentName: './css/[name]_[local]_[hash:base64]',
               sourceMap: true,
               minimize: true
             },
           },
         ],
       },
+      // -- SCSS --
       {
         test: /\.(scss)$/,
         use: [
@@ -97,9 +126,12 @@ const config = {
     ],
   },
   plugins: [
-    htmlPlugin,
     environmentPlugin,
   ],
+  /*plugins: [
+    htmlPlugin,
+    environmentPlugin,
+  ],*/
 };
 
 /*

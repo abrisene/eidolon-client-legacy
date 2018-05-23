@@ -17,50 +17,65 @@ import { ConnectedRouter } from 'react-router-redux'
 import { Routes } from './routes';
 import { configureStore } from './stores';
 
+import axios from 'axios';
 import io from 'socket.io-client';
 
+import config from './config';
+
 import './styles';
-
-/*
- # Utility Methods
- */
-
-const parseEnvJSON = (env) => env !== undefined ? JSON.parse(env) : undefined;
 
 /*
  # Critical Variables
  */
 
-const apiURL = parseEnvJSON(process.env.API_URLS) || {};
-const apiKeys = parseEnvJSON(process.env.API_KEYS) || {};
-
+const { socketURI, apiURI, apiKeys, apiURLs, ...env  } = config;
 
 /*
  # Middleware Variables
  */
 
-const socket = apiURL.socket ? io(apiURL.socket) : undefined;
+const socket = socketURI ? io(socketURI) : undefined;
 const history = createHistory();
-
 
 /*
  # Redux Setup
  */
 
+const {  } = config;
+
 const initialState = {
   app: {
+    config: {},
+    keys: { ...apiKeys },
+    urls: { ...apiURLs, apiURI, socketURI },
+    env,
     status: {
       socket: socket ? true : false,
-    },
-    env: {
-      NODE_ENV: process.env.NODE_ENV,
-      APP_NAME: process.env.APP_NAME,
     },
     stores: {},
   },
 };
 
-const store = configureStore(initialState, { history, socket });
+const store = configureStore(initialState, { ...config, history, socket });
+
+if (apiURI) {
+  axios.get(`${apiURI}/api/configs`)
+    .then((res) => {
+      const { data } = res;
+      const { apiKeys: keys, ...config } = data;
+
+      store.dispatch({
+        type: 'APP/CONFIG/UPDATE',
+        data: config,
+      });
+
+      store.dispatch({
+        type: 'APP/KEYS/UPDATE',
+        data: keys,
+      });
+    })
+    .catch(err => console.error(err));
+}
 
 /*
  # Program

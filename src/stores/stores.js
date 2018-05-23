@@ -23,7 +23,9 @@ import { reducers } from './ducks';
 module.exports = function configureStore(initialState, config = {}) {
   const middleware = [thunk];
 
-  if (process.env.NODE_ENV !== 'production') {
+  const environment = config.env || process.env.NODE_ENV;
+
+  if (environment) {
       middleware.push(createLogger());
   }
 
