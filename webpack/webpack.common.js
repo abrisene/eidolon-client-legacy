@@ -92,8 +92,32 @@ const config = {
               importLoaders: 1,
               localIdentName: './css/[name]_[local]_[hash:base64]',
               sourceMap: true,
-              minimize: true
+              minimize: true,
             },
+          },
+         /* {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [ // post css plugins, can be exported to postcss.config.js
+                precss,
+                autoprefixer,
+              ],
+            }, 
+          },*/
+        ],
+      },
+      // -- LESS --
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'less-loader'
           },
         ],
       },
@@ -108,15 +132,13 @@ const config = {
             loader: 'css-loader', // translates CSS into CommonJS modules
           },
           {
-            loader: 'postcss-loader', // Run post css actions
+            loader: 'postcss-loader',
             options: {
-              plugins: function () { // post css plugins, can be exported to postcss.config.js
-                return [
-                  precss,
-                  autoprefixer,
-                ];
-              }
-            }
+              plugins: () => [ // post css plugins, can be exported to postcss.config.js
+                precss,
+                autoprefixer,
+              ],
+            }, 
           },
           {
             loader: 'sass-loader' // compiles Sass to CSS

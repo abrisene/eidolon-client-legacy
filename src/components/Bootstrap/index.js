@@ -7,6 +7,7 @@
  # Module Dependencies
  */
 
+import Layout from './Layout';
 import Navbar from './Navbar';
 
 /*
@@ -14,5 +15,6 @@ import Navbar from './Navbar';
  */
 
 module.exports = {
+  ...Layout,
   ...Navbar,
 };

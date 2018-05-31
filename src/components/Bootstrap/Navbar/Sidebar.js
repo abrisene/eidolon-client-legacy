@@ -1,6 +1,6 @@
 /*
- # Navbar.js
- # Bootstrap Navbar Component
+ # Sidebar.js
+ # Bootstrap Sidebar Component
  */
 
 /*
@@ -20,33 +20,28 @@ import './styles.less';
 const propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  col: PropTypes.number,
   light: PropTypes.bool,
   dark: PropTypes.bool,
-  fixedTop: PropTypes.bool,
-  fixedBottom: PropTypes.bool,
 };
 
 const defaultProps = {
   className: '',
+  col: 2,
   light: false,
   dark: false,
-  fixedTop: false,
-  fixedBottom: false,
 };
 
-export default function Navbar({
+export default function Sidebar({
   children,
+  col,
   light,
   dark,
-  fixedTop,
-  fixedBottom,
   className,
 }) {
-  const classes = ['navbar'];
-  if (light) classes.push('navbar-light bg-light');
-  if (dark) classes.push('navbar-dark bg-dark');
-  if (fixedTop) classes.push('fixed-top');
-  if (fixedBottom) classes.push('fixed-bottom');
+  const classes = [`col-md-${col}`, 'd-none', 'd-md-block', 'sidebar'];
+  if (light) classes.push('bg-light');
+  if (dark) classes.push('bg-dark');
   if (className && typeof className === 'string') classes.push(className);
 
   return (
@@ -56,5 +51,5 @@ export default function Navbar({
   )
 }
 
-Navbar.propTypes = propTypes;
-Navbar.defaultProps = defaultProps;
+Sidebar.propTypes = propTypes;
+Sidebar.defaultProps = defaultProps;

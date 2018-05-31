@@ -35,7 +35,7 @@ const Routes = () => {
   return (
     <div>
       <Route path="/" component={App} />
-      <Route path={routeConstants.ABOUT} component={Test} />
+      {/*<Route path={routeConstants.ABOUT} component={Test} />*/}
     </div>
   );
 };

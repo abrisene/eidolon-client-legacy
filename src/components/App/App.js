@@ -13,10 +13,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions } from '../../stores';
 
-import { Navbar } from '../Bootstrap';
+import { Route, Link } from 'react-router-dom'
+
+import { Container, Row, Nav, NavLink, Navbar, Sidebar } from '../Bootstrap';
 
 import { leagueGothic } from '../../fonts';
-import './styles.css';
+import './styles.less';
 
 import logo from './images/app.logo.png';
 
@@ -68,6 +70,8 @@ class App extends Component {
       stores,
     } = this.props;
 
+    const appName = env.appName.toUpperCase() || 'EIDOLON';
+
     const childProps = {
       status,
       env,
@@ -76,19 +80,29 @@ class App extends Component {
     const descendants = children ? React.cloneElement(children, { ...childProps }) : '';
     return (
       <div id="l-app" className="l-app">
-        <Navbar light>
-          <div className="col-md-1">
-            <img id="app-logo" src={logo} />
-          </div>
-          <div className="col-md-11">
-            <h1 id="app-test" className="mt-2">EIDOLON</h1>
+        <Navbar light className="c-navbar-primary">
+          <div className="col">
+            <div id="app-logo">
+              <Link to="/">
+                <img src={logo} />
+                <span>{appName}</span>
+              </Link>
+            </div>
           </div>
         </Navbar>
-        <div className="container mt-2">
-          <div className="row">
-          </div>
-        </div>
-        { descendants }
+        <Navbar dark className="c-navbar-secondary">
+          <Nav>
+            <NavLink to={'/about'}>About</NavLink>
+            <NavLink to={'/store'}>Store</NavLink>
+          </Nav>
+        </Navbar>
+        <Container>
+          <Row>
+            <Route exact path="/" render={() => 'Home' } />
+            <Route path="/about" render={() => 'About'} />
+            <Route path="/store" render={() => 'Some Stuff' } />
+          </Row>
+        </Container>
       </div>
     )
   }
